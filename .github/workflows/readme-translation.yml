@@ -1,0 +1,26 @@
+name: Translate README
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - README.md
+  workflow_dispatch:
+
+jobs:
+  translate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: kazuma/readme-translation@v1
+        with:
+          deepl_api_key: ${{ secrets.DEEPL_API_KEY }}
+          input_file: README.md
+          output_file: README.ja.md
+          source_lang: EN
+          target_lang: JA
