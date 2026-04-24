@@ -787,8 +787,18 @@ def set_keyframe_image(idx, plane, inter_frames=1):
     bpy.context.view_layer.update()
 
     # Set image texture of image plane in each frame
+    if len(plane.material_slots) == 0 or plane.material_slots[0].material is None:
+        return
+
     material = plane.material_slots[0].material
-    texture = material.node_tree.nodes.get("Image Texture")
+    if material.node_tree is None:
+        return
+
+    # Search by node type because display names can be localized/renamed.
+    texture = next((n for n in material.node_tree.nodes if n.type == 'TEX_IMAGE'), None)
+    if texture is None:
+        return
+
     texture.image_user.frame_offset = idx - 1
     texture.image_user.keyframe_insert(data_path="frame_offset", frame=idx * inter_frames)
 
@@ -882,13 +892,29 @@ def generate_camera_plane_texture(image_sequence):
 
     if len(plane.material_slots) == 0:
         plane.data.materials.append(material)
+    else:
+        plane.material_slots[0].material = material
 
-    material = plane.active_material
     material.use_nodes = True
 
-    image_texture = material.node_tree.nodes.new(type='ShaderNodeTexImage')
-    principled_bsdf = material.node_tree.nodes.get('Principled BSDF')
-    material.node_tree.links.new(image_texture.outputs['Color'], principled_bsdf.inputs['Base Color'])
+    node_tree = material.node_tree
+    nodes = node_tree.nodes
+    links = node_tree.links
+
+    # Find nodes by type instead of display name (which can be localized/renamed).
+    principled_bsdf = next((n for n in nodes if n.type == 'BSDF_PRINCIPLED'), None)
+    if principled_bsdf is None:
+        principled_bsdf = nodes.new(type='ShaderNodeBsdfPrincipled')
+
+    material_output = next((n for n in nodes if n.type == 'OUTPUT_MATERIAL'), None)
+    if material_output is None:
+        material_output = nodes.new(type='ShaderNodeOutputMaterial')
+
+    if not principled_bsdf.outputs['BSDF'].is_linked:
+        links.new(principled_bsdf.outputs['BSDF'], material_output.inputs['Surface'])
+
+    image_texture = nodes.new(type='ShaderNodeTexImage')
+    links.new(image_texture.outputs['Color'], principled_bsdf.inputs['Base Color'])
 
     image_texture.image = image_sequence
     image_texture.image_user.use_cyclic = True
