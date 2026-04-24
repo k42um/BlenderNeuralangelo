@@ -1,3 +1,8 @@
+<!-- readme-translation:start -->
+<div align="right"><a href="README.ja.md">🇯🇵 日本語</a></div>
+<!-- ↑ このブロックは readme-translation アクションが自動生成しています。削除しないでください。 -->
+<!-- readme-translation:end -->
+
 <div align="center">
 
 # BlenderNeuralangelo
