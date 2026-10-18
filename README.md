@@ -105,5 +105,6 @@ works <sup>[1](https://arxiv.org/abs/2003.09852)[2](https://arxiv.org/abs/2106.1
 on neural surface reconstruction often assumes a spherical region of interest. This addon generates a bounding sphere
 and exports the scene parameters (intrinsics, poses, bounding sphere) following
 the [Instant NGP](https://github.com/NVlabs/instant-ngp) format.
+Since `transform.json` will be changed, please replace it with the one in the original directory.
 
 ![](assets/6_generate_bounding_sphere.gif)
