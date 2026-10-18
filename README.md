@@ -80,7 +80,7 @@ After installation, the BlenderNeuralangelo panel can be located on the right si
 ### 3: Load COLMAP data
 
 COLMAP can be loaded by providing the path to the COLMAP work directory. The images, camera parameters and sparse
-reconstruction results are loaded.
+reconstruction results are loaded. Since the output directory from Neuralangelo is locked at this point, please copy the output folder to a location like Downloads before specifying it.
 
 ![](assets/3_load_data.gif)
 
