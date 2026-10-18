@@ -2,34 +2,35 @@
 
 
 
+
 <div align="center">
 
-# ブレンダーニューラアンジェロ
+# BlenderNeuralangelo
 
 </div>
 
 ![](assets/0_teaser.gif)
 
-[Blender](https://www.blender.org/) COLMAP データの検査と前処理を行うアドオン
-Neuralangelo (CVPR 2023)](https://research.nvidia.com/labs/dir/neuralangelo/)。
-このアドオンでは、COLMAPポーズの検査、RGB画像に重ねたスパース再構成の確認、および以下のエクスポートが可能です。
+COLMAPデータを検査・前処理するための[Blender](https://www.blender.org/)アドオン
+[Neuralangelo (CVPR 2023)](https://research.nvidia.com/labs/dir/neuralangelo/) 向け。
+このアドオンを使用すると、COLMAPのポーズを確認したり、RGB画像と重ね合わせたスパース再構成を確認したり、エクスポートしたりすることができます。
 Neuralangeloの境界領域。
 
 ## はじめに
 
-まず、コードをローカル・ディレクトリにクローンする。
+まず、コードをローカルディレクトリにクローンします。
 
 ```angular2html
 cd /path/to/dir
 git clone git@github.com:mli0603/BlenderNeuralangelo.git
 ```
 
-### 0：実行中のCOLMAP
+### 0: COLMAPの実行
 
-COLMAPの結果を得るには、[指示](https://github.com/NVlabs/neuralangelo/blob/main/DATA_PROCESSING.md)に従ってください。また、例として
-は[toy_example](toy_example)フォルダで提供されている。
+COLMAPの結果を取得するには、[手順](https://github.com/NVlabs/neuralangelo/blob/main/DATA_PROCESSING.md)に従ってください。あるいは、例として
+は、[toy_example](toy_example) フォルダ内に用意されています。
 
-COLMAPの指示に正しく従えば、以下のようなフォルダ構造になるはずだ：
+COLMAP の指示に正しく従えば、次のようなフォルダ構造になるはずです：
 
 ```
 DATA_PATH
@@ -46,62 +47,62 @@ DATA_PATH
 ...
 ```
 
-### 1.1:コマンドラインからBlenderを実行する
-インストールを気にすることなく、Blenderを直接実行することができます：
+### 1.1: コマンドラインからBlenderを実行する
+以下の方法を使えば、インストールを気にすることなくBlenderを直接実行できます：
 
 ```bash
 ./blender --python PATH_TO_BlenderNeuralangelo/start_blender_with_addon.py
 ```
 
-PATH_TO_BlenderNeuralangelo` を `BlenderNeuralangelo` へのパスに置き換えてください。
+`PATH_TO_BlenderNeuralangelo` を、お使いの `BlenderNeuralangelo` へのパスに置き換えてください。
 
 ### 1.2: アドオンとしてインストールする
 
-Blender Addonとしてインストールすることで、blenderを終了した後の再インストールを避けることができます。アドオンとしてインストールするには
+Blenderのアドオンとしてインストールすれば、Blenderを終了した後の再インストールを避けることができます。アドオンとしてインストールするには：
 
 ![](assets/1_installation_addon.gif)
 
-### 1.3:コードとして実行
+### 1.3: コードとして実行
 
-あるいは、以下のようにコードを直接実行することもできる：
+あるいは、次のようにコードを直接実行することもできます：
 
 ![](assets/1_installation_code.gif)
 
-Blenderを終了したら、このステップを繰り返す必要があります。
+Blenderを終了した後、この手順を繰り返す必要があります。
 
-### 2: コントロールパネルの位置
+### 2：コントロールパネルの場所を確認する
 
-インストール後、BlenderNeuralangeloパネルは右側にあるか、キーボードの `N` を押してください。
+インストール後、BlenderNeuralangeloパネルは画面の右側に表示されます。また、キーボードの `N` キーを押しても表示できます。
 
 ![](assets/2_locating_panel.gif)
 
-### 3: COLMAPデータのロード
+### 3: COLMAPデータの読み込み
 
-COLMAPは、COLMAPワークディレクトリへのパスを指定することでロードできる。画像、カメラパラメータ、スパース
-再構成結果がロードされる。
+COLMAPは、COLMAPの作業ディレクトリへのパスを指定することで読み込むことができます。画像、カメラパラメータ、およびスパース
+再構築の結果が読み込まれました。この時点ではNeuralangeloの出力ディレクトリがロックされているため、出力フォルダを指定する前に、「ダウンロード」などの場所にコピーしてください。
 
 ![](assets/3_load_data.gif)
 
-### 4: COLMAPデータの検査
+### 4: COLMAPデータの確認
 
-COLMAPデータは、RGB、スパース再構成、ポーズの結果を見ることで、定性的に検査することができる。
+COLMAPのデータは、RGB画像、スパース再構成、および姿勢推定の結果を確認することで、定性的に検証することができます。
 
 ![](assets/4_inspect_data.gif)
 
-### 5: 関心領域の定義
+### 5：関心領域の定義
 
-Neuralangeloの関心領域をバウンディングボックスの形で定義するためのグラフィックスインターフェースが提供されている。ポイント
-関心領域の外側を切り取ることができる。
+Neuralangelo の関心領域をバウンディングボックスの形で定義するためのグラフィカルインターフェースが用意されています。点
+関心領域の外側にある部分はトリミングできます。
 
 ![](assets/5_crop_point_cloud.gif)
 
-### 6: 境界球の定義
+### 6: 包絡球の定義
 
-[Neuralangelo](https://research.nvidia.com/labs/dir/neuralangelo/)およびそれ以前
+[Neuralangelo](https://research.nvidia.com/labs/dir/neuralangelo/) およびそれ以前の
 作品 <sup>[1](https://arxiv.org/abs/2003.09852)[2](https://arxiv.org/abs/2106.10689)[3](https://arxiv.org/abs/2106.12052)</sup>
-ニューラルサーフェスの再構成では、多くの場合、球状の関心領域を想定します。このアドオンは
-に従い、シーン・パラメータ（イントリンシック、ポーズ、バウンディング・スフィア）をエクスポートします。
-インスタントNGP](https://github.com/NVlabs/instant-ngp)フォーマット。
+ニューラル表面再構成では、多くの場合、球形の関心領域が想定されます。このアドオンは、バウンディングスフィアを生成します。
+そして、以下の手順に従ってシーンパラメータ（イントリンシック、ポーズ、バウンディングスフィア）をエクスポートします。
+[Instant NGP](https://github.com/NVlabs/instant-ngp) 形式。
 
 ![](assets/6_generate_bounding_sphere.gif)
 
