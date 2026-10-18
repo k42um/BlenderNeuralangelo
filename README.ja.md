@@ -3,6 +3,7 @@
 
 
 
+
 <div align="center">
 
 # BlenderNeuralangelo
@@ -18,7 +19,7 @@ Neuralangeloの境界領域。
 
 ## はじめに
 
-まず、コードをローカルディレクトリにクローンします。
+まず、コードをローカルのディレクトリにクローンします。
 
 ```angular2html
 cd /path/to/dir
@@ -27,7 +28,7 @@ git clone git@github.com:mli0603/BlenderNeuralangelo.git
 
 ### 0: COLMAPの実行
 
-COLMAPの結果を取得するには、[手順](https://github.com/NVlabs/neuralangelo/blob/main/DATA_PROCESSING.md)に従ってください。あるいは、例として
+COLMAPの結果を取得するには、[手順](https://github.com/NVlabs/neuralangelo/blob/main/DATA_PROCESSING.md)に従ってください。あるいは、サンプル
 は、[toy_example](toy_example) フォルダ内に用意されています。
 
 COLMAP の指示に正しく従えば、次のようなフォルダ構造になるはずです：
@@ -58,7 +59,7 @@ DATA_PATH
 
 ### 1.2: アドオンとしてインストールする
 
-Blenderのアドオンとしてインストールすれば、Blenderを終了した後の再インストールを避けることができます。アドオンとしてインストールするには：
+Blenderのアドオンとしてインストールすれば、Blenderを終了した後の再インストールが不要になります。アドオンとしてインストールするには：
 
 ![](assets/1_installation_addon.gif)
 
@@ -103,6 +104,7 @@ Neuralangelo の関心領域をバウンディングボックスの形で定義�
 ニューラル表面再構成では、多くの場合、球形の関心領域が想定されます。このアドオンは、バウンディングスフィアを生成します。
 そして、以下の手順に従ってシーンパラメータ（イントリンシック、ポーズ、バウンディングスフィア）をエクスポートします。
 [Instant NGP](https://github.com/NVlabs/instant-ngp) 形式。
+`transform.json` が変更されるため、元のディレクトリにあるファイルと置き換えてください。
 
 ![](assets/6_generate_bounding_sphere.gif)
 
