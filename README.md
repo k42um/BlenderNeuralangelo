@@ -16,8 +16,8 @@
 
 [Blender](https://www.blender.org/) addon to inspect and preprocess COLMAP data
 for [Neuralangelo (CVPR 2023)](https://research.nvidia.com/labs/dir/neuralangelo/).
-The addon allows you to inspect the COLMAP poses, check the sparse reconstruction overlaid with RGB images, and export
-the bounding regions for Neuralangelo.
+The addon lets you inspect COLMAP poses and sparse points, overlay a reconstructed
+Neuralangelo mesh, and export bounding regions for training.
 
 ## Getting Started
 
@@ -94,15 +94,16 @@ COLMAP data can be inspected qualitatively by looking at the RGB, sparse reconst
 
 ### 4.1: Overlay a Neuralangelo mesh
 
-After loading the COLMAP data, extract a `.ply` mesh with Neuralangelo's
-[`extract_mesh.py`](https://github.com/NVlabs/neuralangelo#extracting-mesh), then choose it in
-**Inspect Neuralangelo Mesh → Mesh PLY** and click **Load Neuralangelo Mesh**.
-The mesh is shown as a wireframe over the COLMAP points. Click **Highlight Mesh**
-to select its vertices in Edit Mode. Click **Highlight Pointcloud** to return to
-the point cloud, or **Show / Hide Mesh** to toggle the mesh. Loading another
-PLY replaces the previous mesh. Neuralangelo's extraction script already restores
-the original COLMAP coordinates, so no additional transform is needed. Load the
-COLMAP data first; reloading it clears the imported mesh.
+After loading COLMAP data, select a `.ply` from Neuralangelo's
+[`extract_mesh.py`](https://github.com/NVlabs/neuralangelo#extracting-mesh) in **Mesh PLY** and click
+**Load Neuralangelo Mesh**. The mesh overlays the points in COLMAP coordinates.
+
+![](assets/7_import_and_display_mesh.gif)
+
+Use **Highlight Mesh** and **Highlight Pointcloud** to switch the highlighted
+vertices, or **Show / Hide Mesh** to toggle the mesh.
+
+![](assets/8_highlight_mesh.gif)
 
 ### 5: Defining region of interest
 

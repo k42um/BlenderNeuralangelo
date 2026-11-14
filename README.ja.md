@@ -12,10 +12,8 @@
 
 ![](assets/0_teaser.gif)
 
-COLMAPデータを検査・前処理するための[Blender](https://www.blender.org/)アドオン
-[Neuralangelo (CVPR 2023)](https://research.nvidia.com/labs/dir/neuralangelo/) 向け。
-このアドオンを使用すると、COLMAPのポーズを確認したり、RGB画像と重ね合わせたスパース再構成を確認したり、エクスポートしたりすることができます。
-Neuralangeloの境界領域。
+[Neuralangelo (CVPR 2023)](https://research.nvidia.com/labs/dir/neuralangelo/)向けのCOLMAPデータを検査・前処理する[Blender](https://www.blender.org/)アドオンです。
+COLMAPのカメラ姿勢と点群を確認し、学習結果のメッシュを点群に重ねて表示し、学習用の境界領域を出力できます。
 
 ## はじめに
 
@@ -93,14 +91,15 @@ COLMAPのデータは、RGB画像、スパース再構成、および姿勢推�
 ### 4.1: Neuralangeloのメッシュを重ねて表示
 
 COLMAPデータを読み込んだ後、Neuralangeloの
-[`extract_mesh.py`](https://github.com/NVlabs/neuralangelo#extracting-mesh)で`.ply`メッシュを出力します。
-**Inspect Neuralangelo Mesh → Mesh PLY**でファイルを選び、**Load Neuralangelo Mesh**を押してください。
-メッシュは点群に重なるワイヤーフレームとして表示されます。**Highlight Mesh**を押すと、
-編集モードでメッシュの頂点が選択されます。**Highlight Pointcloud**で点群の選択表示に戻せます。
-**Show / Hide Mesh**でメッシュの表示も切り替えられます。
-別のPLYを読み込むと以前のメッシュは置き換わります。
-公式の抽出スクリプトはCOLMAPの元の座標へ戻してから保存するため、追加の座標変換は不要です。
-COLMAPを再読み込みするとメッシュは消えるため、その後にPLYを再読み込みしてください。
+[`extract_mesh.py`](https://github.com/NVlabs/neuralangelo#extracting-mesh)で出力した`.ply`を**Mesh PLY**で選び、
+**Load Neuralangelo Mesh**を押します。メッシュがCOLMAPの点群に重なって表示されます。
+
+![](assets/7_import_and_display_mesh.gif)
+
+**Highlight Mesh**と**Highlight Pointcloud**で選択表示を切り替え、
+**Show / Hide Mesh**でメッシュの表示・非表示を切り替えられます。
+
+![](assets/8_highlight_mesh.gif)
 
 ### 5：関心領域の定義
 
