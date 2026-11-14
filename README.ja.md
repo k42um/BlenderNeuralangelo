@@ -90,6 +90,18 @@ COLMAPのデータは、RGB画像、スパース再構成、および姿勢推�
 
 ![](assets/4_inspect_data.gif)
 
+### 4.1: Neuralangeloのメッシュを重ねて表示
+
+COLMAPデータを読み込んだ後、Neuralangeloの
+[`extract_mesh.py`](https://github.com/NVlabs/neuralangelo#extracting-mesh)で`.ply`メッシュを出力します。
+**Inspect Neuralangelo Mesh → Mesh PLY**でファイルを選び、**Load Neuralangelo Mesh**を押してください。
+メッシュは点群に重なるワイヤーフレームとして表示されます。**Highlight Mesh**を押すと、
+編集モードでメッシュの頂点が選択されます。**Highlight Pointcloud**で点群の選択表示に戻せます。
+**Show / Hide Mesh**でメッシュの表示も切り替えられます。
+別のPLYを読み込むと以前のメッシュは置き換わります。
+公式の抽出スクリプトはCOLMAPの元の座標へ戻してから保存するため、追加の座標変換は不要です。
+COLMAPを再読み込みするとメッシュは消えるため、その後にPLYを再読み込みしてください。
+
 ### 5：関心領域の定義
 
 Neuralangelo の関心領域をバウンディングボックスの形で定義するためのグラフィカルインターフェースが用意されています。点

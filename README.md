@@ -92,6 +92,18 @@ COLMAP data can be inspected qualitatively by looking at the RGB, sparse reconst
 
 ![](assets/4_inspect_data.gif)
 
+### 4.1: Overlay a Neuralangelo mesh
+
+After loading the COLMAP data, extract a `.ply` mesh with Neuralangelo's
+[`extract_mesh.py`](https://github.com/NVlabs/neuralangelo#extracting-mesh), then choose it in
+**Inspect Neuralangelo Mesh → Mesh PLY** and click **Load Neuralangelo Mesh**.
+The mesh is shown as a wireframe over the COLMAP points. Click **Highlight Mesh**
+to select its vertices in Edit Mode. Click **Highlight Pointcloud** to return to
+the point cloud, or **Show / Hide Mesh** to toggle the mesh. Loading another
+PLY replaces the previous mesh. Neuralangelo's extraction script already restores
+the original COLMAP coordinates, so no additional transform is needed. Load the
+COLMAP data first; reloading it clears the imported mesh.
+
 ### 5: Defining region of interest
 
 A graphics interface is provided to define the region of interest for Neuralangelo as a form of bounding box. Points

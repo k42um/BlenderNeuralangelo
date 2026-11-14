@@ -498,6 +498,7 @@ select_point_index = []
 radius = 0
 center = (0, 0, 0)
 bounding_box = []
+NEURALANGELO_MESH_NAME = 'Neuralangelo Mesh'
 
 
 # ------------------------------------------------------------------------
@@ -805,7 +806,12 @@ def set_keyframe_image(idx, plane, inter_frames=1):
 
 def select_all_vert(obj_name):
     if obj_name in bpy.data.objects:
+        if bpy.context.object and bpy.context.object.mode != 'OBJECT':
+            bpy.ops.object.mode_set(mode='OBJECT')
+        for selected in bpy.context.selected_objects:
+            selected.select_set(False)
         obj = bpy.context.scene.objects[obj_name]
+        obj.select_set(True)
         bpy.context.view_layer.objects.active = obj
         bpy.ops.object.mode_set(mode='EDIT')
         bpy.ops.mesh.select_mode(type="VERT")
@@ -1026,6 +1032,12 @@ class MyProperties(PropertyGroup):
         maxlen=1024,
         subtype='DIR_PATH'
     )
+    neuralangelo_mesh_path: StringProperty(
+        name="Mesh PLY",
+        description="PLY exported by Neuralangelo's extract_mesh.py",
+        default="",
+        subtype='FILE_PATH'
+    )
     box_slider: FloatVectorProperty(
         name="Plane offset",
         subtype='TRANSLATION',
@@ -1138,6 +1150,95 @@ class LoadCOLMAP(Operator):
         # load camera info
         load_camera(colmap_data, context)
 
+        return {'FINISHED'}
+
+
+class LoadNeuralangeloMesh(Operator):
+    """Overlay a Neuralangelo mesh in the COLMAP coordinate system."""
+    bl_label = "Load Neuralangelo Mesh"
+    bl_idname = "addon.load_neuralangelo_mesh"
+
+    @classmethod
+    def poll(cls, context):
+        return ('Point Cloud' in context.scene.objects and
+                bool(context.scene.my_tool.neuralangelo_mesh_path))
+
+    def execute(self, context):
+        path = bpy.path.abspath(context.scene.my_tool.neuralangelo_mesh_path)
+        if not os.path.isfile(path) or not path.lower().endswith('.ply'):
+            self.report({'ERROR'}, "Select an existing Neuralangelo PLY file")
+            return {'CANCELLED'}
+
+        # PLY import needs Object Mode. Restore Edit Mode on the point cloud so
+        # its vertices remain visible over the imported surface.
+        if context.object and context.object.mode != 'OBJECT':
+            bpy.ops.object.mode_set(mode='OBJECT')
+
+        previous_objects = set(bpy.data.objects)
+        try:
+            if bpy.app.version >= (4, 1, 0):
+                result = bpy.ops.wm.ply_import(filepath=path)
+            else:
+                result = bpy.ops.import_mesh.ply(filepath=path)
+        except (RuntimeError, AttributeError) as exc:
+            self.report({'ERROR'}, "Could not import PLY: " + str(exc))
+            select_all_vert('Point Cloud')
+            return {'CANCELLED'}
+
+        imported = [obj for obj in bpy.data.objects if obj not in previous_objects
+                    and obj.type == 'MESH']
+        if 'FINISHED' not in result or not imported:
+            self.report({'ERROR'}, "PLY import did not create a mesh")
+            select_all_vert('Point Cloud')
+            return {'CANCELLED'}
+
+        old_mesh = bpy.data.objects.get(NEURALANGELO_MESH_NAME)
+        if old_mesh is not None:
+            bpy.data.objects.remove(old_mesh, do_unlink=True)
+
+        mesh = imported[0]
+        mesh.name = NEURALANGELO_MESH_NAME
+        mesh.display_type = 'WIRE'
+        mesh.hide_set(False)
+        context.scene.objects['Point Cloud'].show_in_front = True
+        for area in context.screen.areas:
+            if area.type == 'VIEW_3D':
+                area.spaces.active.shading.type = 'SOLID'
+        select_all_vert('Point Cloud')
+        self.report({'INFO'}, "Neuralangelo mesh loaded over COLMAP points")
+        return {'FINISHED'}
+
+
+class ToggleNeuralangeloMesh(Operator):
+    bl_label = "Show / Hide Mesh"
+    bl_idname = "addon.toggle_neuralangelo_mesh"
+
+    @classmethod
+    def poll(cls, context):
+        return NEURALANGELO_MESH_NAME in context.scene.objects
+
+    def execute(self, context):
+        mesh = context.scene.objects[NEURALANGELO_MESH_NAME]
+        mesh.hide_set(not mesh.hide_get())
+        return {'FINISHED'}
+
+
+class HighlightNeuralangeloMesh(Operator):
+    bl_label = "Highlight Mesh"
+    bl_idname = "addon.highlight_neuralangelo_mesh"
+
+    @classmethod
+    def poll(cls, context):
+        return NEURALANGELO_MESH_NAME in context.scene.objects
+
+    def execute(self, context):
+        mesh = context.scene.objects[NEURALANGELO_MESH_NAME]
+        mesh.hide_set(False)
+        mesh.display_type = 'WIRE'
+        for area in context.screen.areas:
+            if area.type == 'VIEW_3D':
+                area.spaces.active.shading.type = 'SOLID'
+        select_all_vert(NEURALANGELO_MESH_NAME)
         return {'FINISHED'}
 
 
@@ -1514,6 +1615,19 @@ class InspectionPanel(NeuralangeloCustomPanel, bpy.types.Panel):
         box.row().prop(mytool, "imagedepth_slider", slider=True, text='Image plane depth')
 
 
+class MeshPanel(NeuralangeloCustomPanel, bpy.types.Panel):
+    bl_parent_id = "BN_PT_main"
+    bl_idname = "BN_PT_mesh"
+    bl_label = "Inspect Neuralangelo Mesh"
+
+    def draw(self, context):
+        layout = self.layout
+        layout.prop(context.scene.my_tool, "neuralangelo_mesh_path")
+        layout.operator("addon.load_neuralangelo_mesh")
+        layout.operator("addon.highlight_neuralangelo_mesh")
+        layout.operator("addon.toggle_neuralangelo_mesh")
+
+
 class BoundingPanel(NeuralangeloCustomPanel, bpy.types.Panel):
     bl_parent_id = "BN_PT_main"
     bl_idname = "BN_PT_bounding"
@@ -1568,8 +1682,12 @@ classes = (
     MainPanel,
     LoadingPanel,
     InspectionPanel,
+    MeshPanel,
     BoundingPanel,
     LoadCOLMAP,
+    LoadNeuralangeloMesh,
+    ToggleNeuralangeloMesh,
+    HighlightNeuralangeloMesh,
     Crop,
     BoundSphere,
     HideShowBox,
