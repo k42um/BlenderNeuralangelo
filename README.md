@@ -92,19 +92,6 @@ COLMAP data can be inspected qualitatively by looking at the RGB, sparse reconst
 
 ![](assets/4_inspect_data.gif)
 
-### 4.1: Overlay a Neuralangelo mesh
-
-After loading COLMAP data, select a `.ply` from Neuralangelo's
-[`extract_mesh.py`](https://github.com/NVlabs/neuralangelo#extracting-mesh) in **Mesh PLY** and click
-**Load Neuralangelo Mesh**. The mesh overlays the points in COLMAP coordinates.
-
-![](assets/7_import_and_display_mesh.gif)
-
-Use **Highlight Mesh** and **Highlight Pointcloud** to switch the highlighted
-vertices, or **Show / Hide Mesh** to toggle the mesh.
-
-![](assets/8_highlight_mesh.gif)
-
 ### 5: Defining region of interest
 
 A graphics interface is provided to define the region of interest for Neuralangelo as a form of bounding box. Points
@@ -122,3 +109,16 @@ the [Instant NGP](https://github.com/NVlabs/instant-ngp) format.
 Since `transform.json` will be changed, please replace it with the one in the original directory.
 
 ![](assets/6_generate_bounding_sphere.gif)
+
+### 7: Overlay a Neuralangelo mesh
+
+After loading COLMAP data, select a `.ply` from Neuralangelo's
+[`extract_mesh.py`](https://github.com/NVlabs/neuralangelo#extracting-mesh) in **Mesh PLY** and click
+**Load Neuralangelo Mesh**. The mesh overlays the points in COLMAP coordinates.
+
+![](assets/7_import_and_display_mesh.gif)
+
+Use **Highlight Mesh** and **Highlight Pointcloud** to switch the highlighted
+vertices, or **Show / Hide Mesh** to toggle the mesh.
+
+![](assets/8_highlight_mesh.gif)
