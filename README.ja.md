@@ -4,6 +4,7 @@
 
 
 
+
 <div align="center">
 
 # BlenderNeuralangelo
@@ -12,12 +13,14 @@
 
 ![](assets/0_teaser.gif)
 
-[Neuralangelo (CVPR 2023)](https://research.nvidia.com/labs/dir/neuralangelo/)向けのCOLMAPデータを検査・前処理する[Blender](https://www.blender.org/)アドオンです。
-COLMAPのカメラ姿勢と点群を確認し、学習結果のメッシュを点群に重ねて表示し、学習用の境界領域を出力できます。
+COLMAPデータを検査・前処理するための[Blender](https://www.blender.org/)アドオン
+[Neuralangelo (CVPR 2023)](https://research.nvidia.com/labs/dir/neuralangelo/) 向け。
+このアドオンを使用すると、COLMAPのポーズやスパースポイントを検査したり、再構築されたデータを重ね合わせたりすることができます。
+Neuralangeloメッシュを作成し、トレーニング用のバウンディング領域をエクスポートします。
 
 ## はじめに
 
-まず、コードをローカルのディレクトリにクローンします。
+まず、コードをローカルディレクトリにクローンします。
 
 ```angular2html
 cd /path/to/dir
@@ -100,22 +103,22 @@ Neuralangelo の関心領域をバウンディングボックスの形で定義�
 [Neuralangelo](https://research.nvidia.com/labs/dir/neuralangelo/) およびそれ以前の
 作品 <sup>[1](https://arxiv.org/abs/2003.09852)[2](https://arxiv.org/abs/2106.10689)[3](https://arxiv.org/abs/2106.12052)</sup>
 ニューラル表面再構成では、多くの場合、球形の関心領域が想定されます。このアドオンは、バウンディングスフィアを生成します。
-そして、以下の手順に従ってシーンパラメータ（イントリンシック、ポーズ、バウンディングスフィア）をエクスポートします。
+そして、以下の手順に従ってシーンパラメータ（イントリニクス、ポーズ、バウンディングスフィア）をエクスポートします。
 [Instant NGP](https://github.com/NVlabs/instant-ngp) 形式。
 `transform.json` が変更されるため、元のディレクトリにあるファイルと置き換えてください。
 
 ![](assets/6_generate_bounding_sphere.gif)
 
-### 7: Neuralangeloのメッシュを重ねて表示
+### 7: Neuralangeloメッシュをオーバーレイする
 
-COLMAPデータを読み込んだ後、Neuralangeloの
-[`extract_mesh.py`](https://github.com/NVlabs/neuralangelo#extracting-mesh)で出力した`.ply`を**Mesh PLY**で選び、
-**Load Neuralangelo Mesh**を押します。メッシュがCOLMAPの点群に重なって表示されます。
+COLMAPデータを読み込んだ後、Neuralangeloの`.ply`ファイルを選択してください。
+**Mesh PLY**内の[`extract_mesh.py`](https://github.com/NVlabs/neuralangelo#extracting-mesh)をクリックし、
+**Neuralangeloメッシュを読み込む**。このメッシュは、COLMAP座標系の点の上に重ねて表示されます。
 
 ![](assets/7_import_and_display_mesh.gif)
 
-**Highlight Mesh**と**Highlight Pointcloud**で選択表示を切り替え、
-**Show / Hide Mesh**でメッシュの表示・非表示を切り替えられます。
+**「メッシュのハイライト」**および**「ポイントクラウドのハイライト」**を使用して、ハイライト表示を切り替えます。
+頂点、または**メッシュの表示／非表示**でメッシュの表示／非表示を切り替えます。
 
 ![](assets/8_highlight_mesh.gif)
 
