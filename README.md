@@ -20,6 +20,9 @@ for [Neuralangelo (CVPR 2023)](https://research.nvidia.com/labs/dir/neuralangelo
 The addon lets you inspect COLMAP poses and sparse points, overlay a reconstructed
 Neuralangelo mesh, and export bounding regions for training.
 
+> [!CAUTION]
+> This repository has been modified since it was forked from the [original repository](https://github.com/mli0603/BlenderNeuralangelo). Please keep this in mind when using it.
+
 ## Getting Started
 
 First clone the code to a local directory.
