@@ -5,6 +5,7 @@
 
 
 
+
 <div align="center">
 
 # BlenderNeuralangelo
@@ -17,6 +18,9 @@ COLMAPデータを検査・前処理するための[Blender](https://www.blender
 [Neuralangelo (CVPR 2023)](https://research.nvidia.com/labs/dir/neuralangelo/) 向け。
 このアドオンを使用すると、COLMAPのポーズやスパースポイントを検査したり、再構築されたデータを重ね合わせたりすることができます。
 Neuralangeloメッシュを作成し、トレーニング用のバウンディング領域をエクスポートします。
+
+> [!注意]
+> このリポジトリは、[元のリポジトリ](https://github.com/mli0603/BlenderNeuralangelo)からフォークされて以来、変更が加えられています。ご利用の際は、この点にご留意ください。
 
 ## はじめに
 
@@ -103,7 +107,7 @@ Neuralangelo の関心領域をバウンディングボックスの形で定義�
 [Neuralangelo](https://research.nvidia.com/labs/dir/neuralangelo/) およびそれ以前の
 作品 <sup>[1](https://arxiv.org/abs/2003.09852)[2](https://arxiv.org/abs/2106.10689)[3](https://arxiv.org/abs/2106.12052)</sup>
 ニューラル表面再構成では、多くの場合、球形の関心領域が想定されます。このアドオンは、バウンディングスフィアを生成します。
-そして、以下の手順に従ってシーンパラメータ（イントリニクス、ポーズ、バウンディングスフィア）をエクスポートします。
+そして、以下の手順に従ってシーンパラメータ（イントリンシック、ポーズ、バウンディングスフィア）をエクスポートします。
 [Instant NGP](https://github.com/NVlabs/instant-ngp) 形式。
 `transform.json` が変更されるため、元のディレクトリにあるファイルと置き換えてください。
 
